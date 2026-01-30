@@ -1,0 +1,206 @@
+{
+  "name": "Form Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## Form Automation\n### Automation to understanding the working of nodes and inside the settings or configuration1.\n1. Create and submit the n8n form \n2. Connect google sheet with n8n\n3. Execute workflow and store the values in google sheet.(Append row in sheet)\n4. Send email with google sheet details instantly. \n\n",
+        "height": 224,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -464,
+        -240
+      ],
+      "typeVersion": 1,
+      "id": "ID",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "formTitle": "Satnam Consultation Form",
+        "formDescription": "Hi there, glad to meet you.\nPlease fill the form below so as connect with Satnam for AI consultation or training.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Services",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Consultation"
+                  },
+                  {
+                    "option": "Training"
+                  }
+                ]
+              },
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false,
+          "buttonLabel": "Submit Form"
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -512,
+        64
+      ],
+      "id": "ID",
+      "name": "On form submission",
+      "webhookId": "ID"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "ID",
+          "mode": "list",
+          "cachedResultName": "Leads",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1edsBL5tIyGKesiJmQtgPyuhObI2NOeD39IcU5jNaGps/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1edsBL5tIyGKesiJmQtgPyuhObI2NOeD39IcU5jNaGps/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Services": "={{ $json.Services }}",
+            "Time": "={{ $json.submittedAt }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Services",
+              "displayName": "Services",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Time",
+              "displayName": "Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -304,
+        64
+      ],
+      "id": "ID",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "ID",
+          "name": "Google Sheets account"
+        }
+      },
+      "notes": "Google Leads sheet"
+    },
+    {
+      "parameters": {
+        "sendTo": "Email-address",
+        "subject": "Form Lead Update",
+        "message": "=Hi Satnam, \nHow are you? \n\nThere is a new lead on the form. \n\nName :  {{ $json.Name }}\nService : {{ $json.Services }}\nTime : {{ $json.Time }}\n\nSource : {{ $workflow.id }}\n\nThanks,\nYour Awesome Workflow",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        -96,
+        64
+      ],
+      "id": "ID",
+      "name": "Send a message",
+      "webhookId": "ID",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ID",
+          "name": "Gmail account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "ID",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ID"
+  },
+  "id": "ID",
+  "tags": [
+    {
+      "updatedAt": "2026-01-29T10:27:02.166Z",
+      "createdAt": "2026-01-29T10:27:02.166Z",
+      "id": "ID",
+      "name": "learnn8n"
+    }
+  ]
+}
